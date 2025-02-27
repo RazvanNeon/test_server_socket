@@ -11,4 +11,11 @@ async def main():
         await asyncio.Future()  # Rămâne activ pentru a păstra serverul în funcțiune
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # Verificăm dacă există o buclă de evenimente activă
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    
+    loop.run_until_complete(main())
